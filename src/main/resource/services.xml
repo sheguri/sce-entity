@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+        http://www.springframework.org/schema/jdbc 
+		http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+		
+    
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="propertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="locations">
+			<list>
+				<value>classpath:application${CONFIG_ENV}.properties</value>
+				<value>file:${CONFIG_HOME}/application.properties</value>	
+			</list>				
+		 </property>			
+ 		<property name="valueSeparator" value="~~" />
+	</bean>
+	<!--  <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource" >         
+         <constructor-arg ref="dataSourceDB" />         
+         <property name="logFormatter">                    
+             <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter" >
+                 <property name="loggingType" value="SINGLE_LINE" />
+                 <property name="sqlPrefix" value="\nSQL*********" />            
+             </bean>            
+         </property>     
+    </bean> -->
+    
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${DB.driverClass~~com.mysql.jdbc.Driver}" />
+		<property name="url" value="${DB.url~~jdbc:mysql://tapimizedatabase.c7tjyqjoeuyp.us-east-1.rds.amazonaws.com:3306/MIZEDDB}" />
+		<property name="username" value="${DB.username~~ddbuser}" />
+		<property name="password" value="${DB.password~~ddbuser_1234}" />
+		<property name="maxIdle" value="${DB.maxIdle~~5}" />
+		<property name="maxActive" value="${DB.maxActive~~50}" />
+		<property name="maxWait" value="${DB.maxWait~~1000}" />
+		<property name="validationQuery" value="select 1" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="${DB.timeBetweenEvictionRunsMillis~~1200000}" />
+		<property name="minEvictableIdleTimeMillis" value="${DB.minEvictableIdleTimeMillis~~1800000}" />
+		<property name="numTestsPerEvictionRun" value="${DB.minEvictableIdleTimeMillis~~5}" />
+		<property name="defaultAutoCommit" value="${DB.defaultAutoCommit~~true}" />
+	</bean> -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${DB.driverClass~~com.mysql.jdbc.Driver}" />
+	    <property name="url" value="${DB.url~~jdbc:mysql://tapimizedatabase.c7tjyqjoeuyp.us-east-1.rds.amazonaws.com:3306/MIZEDDB}" />
+	    <property name="username"  value="${DB.username~~ddbuser}" />
+	    <property name="password" value="${DB.password~~ddbuser_1234}" />
+		<!-- <property name="maxIdle" value="${DB.maxIdle~~5}" />
+		<property name="maxActive" value="${DB.maxActive~~50}" />
+		<property name="maxWait" value="${DB.maxWait~~1000}" />
+		<property name="validationQuery" value="select 1" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="${DB.timeBetweenEvictionRunsMillis~~1200000}" />
+		<property name="minEvictableIdleTimeMillis" value="${DB.minEvictableIdleTimeMillis~~1800000}" />
+		<property name="numTestsPerEvictionRun" value="${DB.minEvictableIdleTimeMillis~~5}" />
+		<property name="defaultAutoCommit" value="${DB.defaultAutoCommit~~true}" /> 
+ 		-->	
+ 	</bean>
+
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="${DB.database~~MYSQL}" />
+				<property name="generateDdl" value="${DB.generateDdl~~false}" />
+				<property name="showSql" value="${DB.showSql~~true}" />
+			</bean>
+		</property>
+		 <property name="jpaProperties">
+	        <props>                              
+	            <prop  key="hibernate.cache.use_second_level_cache" >true</prop>
+	            <!-- <prop  key="hibernate.cache.region.factory_class" >org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+	            <prop  key="net.sf.ehcache.configurationResourceName" >${level2.cacheConfigPath~~ehcache-secondLevel.xml}</prop>
+	            <prop  key="hibernate.generate_statistics">true</prop>
+	            <prop  key="hibernate.cache.use_query_cache">true</prop>
+	            <prop  key="javax.persistence.sharedCache.mode" >ENABLE_SELECTIVE</prop> -->
+	        </props>
+	    </property>
+		<property name="packagesToScan" value="com.mize.domain" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+		</property>
+
+	</bean>
+		
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+</beans>
