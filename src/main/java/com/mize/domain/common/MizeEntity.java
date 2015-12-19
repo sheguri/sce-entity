@@ -16,6 +16,11 @@ import com.mize.domain.datetime.DateTime;
  */
 public class MizeEntity implements IEntity, Comparable<MizeEntity> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1180956690343169549L;
+	
 	protected Long createdBy;
 	protected DateTime createdDate;
 	protected Long updatedBy;

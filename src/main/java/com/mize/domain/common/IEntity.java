@@ -1,8 +1,10 @@
 package com.mize.domain.common;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface IEntity {
+public interface IEntity extends Serializable{
 
 	public static final int PRIME = 31;		
 	public static final int EQUAL = 0;	

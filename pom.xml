@@ -33,6 +33,7 @@
 		<hibernate-ehcache.version>4.2.7.Final</hibernate-ehcache.version>
 		<ehcache.version>2.6.7</ehcache.version>
 		<org-reflections-version>0.9.9</org-reflections-version>
+		<spring-data-jpa.version>1.5.3.RELEASE</spring-data-jpa.version>
   </properties>
 
   <dependencies>
@@ -230,5 +231,10 @@
             <artifactId>hibernate-ehcache</artifactId>
             <version>${hibernate-ehcache.version}</version>
         </dependency>  
+        <dependency>
+           <groupId>org.springframework.data</groupId>
+        	<artifactId>spring-data-jpa</artifactId>
+        	<version>${spring-data-jpa.version}</version>
+        </dependency>
   </dependencies>
 </project>

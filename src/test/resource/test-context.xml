@@ -64,7 +64,7 @@
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${DB.driverClass~~com.mysql.jdbc.Driver}" />
-	    <property name="url" value="${DB.url~~jdbc:mysql://tapimizedatabase.c7tjyqjoeuyp.us-east-1.rds.amazonaws.com:3306/MIZEDDB}" />
+	    <property name="url" value="${DB.url~~jdbc:mysql://localhost:3306/MIZEDDB}" />
 	    <property name="username"  value="${DB.username~~ddbuser}" />
 	    <property name="password" value="${DB.password~~ddbuser_1234}" />
 		<!-- <property name="maxIdle" value="${DB.maxIdle~~5}" />
